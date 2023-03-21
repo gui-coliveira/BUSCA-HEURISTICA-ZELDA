@@ -52,6 +52,9 @@ terreno = [    [FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLOR
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (0, 0)
 ponto_destino = (9, 9)
+#inicial = (25, 28) dungeon1 = (6, 32) dungeon2 = (39, 18) dungeon3 = (25, 2) porta = (7, 6) espada = (3, 2)
+
+
 
 def calcular_distancia(ponto1, ponto2):
     x1, y1 = ponto1
