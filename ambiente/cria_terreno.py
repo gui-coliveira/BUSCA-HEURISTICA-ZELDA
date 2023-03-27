@@ -1,21 +1,22 @@
 tipo_terreno = {
-    "g":"GRAMA",
-    "a":"AREIA",
-    "f":"FLORESTA",
-    "m":"MONTANHA",
-    "w":"AGUA"
+    "g": "GRAMA",
+    "a": "AREIA",
+    "f": "FLORESTA",
+    "m": "MONTANHA",
+    "w": "AGUA"
 }
 
-terreno =[]
+terreno = []
 
-with open("/home/driven/Documentos/Uesb/IA/BUSCA-HEURISTICA-ZELDA/ambiente/terreno.txt", "r") as arquivo:
+with open("./ambiente/terreno.txt", "r") as arquivo:
     mapa = arquivo.readlines()
     for linha in mapa:
-        temp=[]
+        temp = []
         for caracter in linha:
             if caracter != '\n':
                 temp.append(tipo_terreno[caracter])
         terreno.append(temp)
+
 
 def retorna_terreno():
     return terreno

@@ -10,11 +10,11 @@ MONTANHA = (139, 137, 137)
 AGUA = (30, 144, 255)
 
 converte_variavel = {
-    "GRAMA":GRAMA,
-    "AREIA":AREIA,
-    "FLORESTA":FLORESTA,
-    "MONTANHA":MONTANHA,
-    "AGUA":AGUA
+    "GRAMA": GRAMA,
+    "AREIA": AREIA,
+    "FLORESTA": FLORESTA,
+    "MONTANHA": MONTANHA,
+    "AGUA": AGUA
 }
 
 # Definir o custo de cada tipo de terreno
@@ -32,9 +32,9 @@ VERMELHO = (255, 0, 0)
 pygame.init()
 
 # Definir as dimensões da tela e o tamanho dos tiles
-LARGURA_TELA = 940
-ALTURA_TELA = 1280
-TAMANHO_TILE = 22
+LARGURA_TELA = 800
+ALTURA_TELA = 800
+TAMANHO_TILE = 19
 
 # Criar a janela
 screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -46,33 +46,25 @@ COLUNAS = 42
 # Definir o terreno manualmente
 
 terreno = cria_terreno.retorna_terreno()
-terreno_convertido= []
+terreno_convertido = []
 for linha in terreno:
     linha_convertida = []
     for item in linha:
         linha_convertida.append(converte_variavel[item])
     terreno_convertido.append(linha_convertida)
-# [    [FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA],
-#     [FLORESTA, GRAMA, GRAMA, FLORESTA, GRAMA, FLORESTA, GRAMA, FLORESTA, GRAMA, GRAMA],
-#     [FLORESTA, GRAMA, FLORESTA, FLORESTA, AGUA, GRAMA, AREIA, FLORESTA, FLORESTA, AGUA],
-#     [FLORESTA, GRAMA, MONTANHA, FLORESTA, AGUA, GRAMA, GRAMA, MONTANHA, FLORESTA, AGUA],
-#     [FLORESTA, GRAMA, MONTANHA, GRAMA, GRAMA, MONTANHA, MONTANHA, MONTANHA, GRAMA, GRAMA],
-#     [FLORESTA, GRAMA, GRAMA, AGUA, AGUA, GRAMA, GRAMA, GRAMA, AGUA, AGUA],
-#     [FLORESTA, GRAMA, GRAMA, AGUA, AGUA, GRAMA, AREIA, GRAMA, AGUA, AGUA],
-#     [FLORESTA, GRAMA, FLORESTA, FLORESTA, AGUA, GRAMA, AREIA, FLORESTA, FLORESTA, AGUA],
-#     [FLORESTA, FLORESTA, MONTANHA, FLORESTA, AGUA, GRAMA, GRAMA, MONTANHA, FLORESTA, AGUA],
-#     [FLORESTA, GRAMA, MONTANHA, GRAMA, GRAMA, MONTANHA, MONTANHA, MONTANHA, GRAMA, GRAMA]
-# ]
+
 print(terreno)
 print(terreno_convertido)
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (0, 0)
 ponto_destino = (2, 3)
 
+
 def calcular_distancia(ponto1, ponto2):
     x1, y1 = ponto1
     x2, y2 = ponto2
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
 
 class Celula:
     def __init__(self, posicao, custo):
@@ -96,27 +88,34 @@ class Celula:
 def heuristica(celula_atual, ponto_destino):
     return calcular_distancia(celula_atual.posicao, ponto_destino) * 10
 
+
 def custo(celula_atual, vizinho):
     if vizinho in celula_atual.vizinhos:
         return celula_atual.custo + vizinho.custo
     else:
         return float('inf')
 
+
 def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
     # Criar as células do terreno
-    celulas = [[Celula((linha, coluna), CUSTO[terreno_convertido[linha][coluna]]) for coluna in range(COLUNAS)] for linha in range(LINHAS)]
+    celulas = [[Celula((linha, coluna), CUSTO[terreno_convertido[linha][coluna]])
+                for coluna in range(COLUNAS)] for linha in range(LINHAS)]
 
     # Conectar as células aos seus vizinhos
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
             if linha > 0:
-                celulas[linha][coluna].vizinhos.append(celulas[linha-1][coluna])
+                celulas[linha][coluna].vizinhos.append(
+                    celulas[linha-1][coluna])
             if linha < LINHAS-1:
-                celulas[linha][coluna].vizinhos.append(celulas[linha+1][coluna])
+                celulas[linha][coluna].vizinhos.append(
+                    celulas[linha+1][coluna])
             if coluna > 0:
-                celulas[linha][coluna].vizinhos.append(celulas[linha][coluna-1])
+                celulas[linha][coluna].vizinhos.append(
+                    celulas[linha][coluna-1])
             if coluna < COLUNAS-1:
-                celulas[linha][coluna].vizinhos.append(celulas[linha][coluna+1])
+                celulas[linha][coluna].vizinhos.append(
+                    celulas[linha][coluna+1])
 
     # Inicializar as listas aberta e fechada
     aberta = []
@@ -172,16 +171,15 @@ def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
         caminho.append(celula_atual.posicao)
         celula_atual = celula_atual.pai
     caminho.append(ponto_partida)
-    
 
     # Pintar o caminho mais curto de vermelho
     for posicao in caminho:
         x, y = posicao
-        pygame.draw.rect(screen, VERMELHO, (y*TAMANHO_TILE, x*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+        pygame.draw.rect(screen, VERMELHO, (y*TAMANHO_TILE,
+                         x*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
 
     # Se não houver caminho para o ponto de destino, retornar None
     return None
-          
 
 
 # Loop principal do jogo
@@ -192,7 +190,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-    
+
     # Desenhar o terreno_convertido na tela
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
@@ -207,9 +205,10 @@ while True:
                 cor = (64, 64, 64)  # Cinza para a montanha
             elif terreno_convertido[linha][coluna] == AGUA:
                 cor = (0, 0, 255)  # Azul para a água
-            
+
             # Desenhar o tile na tela
-            pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE, linha * TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+            pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
+                             linha * TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
 
     # Atualizar a tela
     pygame.display.update()
@@ -219,5 +218,5 @@ if encontrou_destino:
     while celula_atual.pai is not None:
         celula_atual = celula_atual.pai
         x, y = celula_atual.posicao
-        pygame.draw.rect(screen, VERMELHO, (y * TAMANHO_TILE, x * TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
-  
+        pygame.draw.rect(screen, VERMELHO, (y * TAMANHO_TILE,
+                         x * TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
