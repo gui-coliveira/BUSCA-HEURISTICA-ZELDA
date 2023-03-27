@@ -1,5 +1,6 @@
 import pygame
 import math
+import cria_terreno
 
 # Definir as cores dos diferentes tipos de terreno
 GRAMA = (124, 252, 0)
@@ -7,6 +8,14 @@ AREIA = (244, 164, 96)
 FLORESTA = (34, 139, 34)
 MONTANHA = (139, 137, 137)
 AGUA = (30, 144, 255)
+
+converte_variavel = {
+    "GRAMA":GRAMA,
+    "AREIA":AREIA,
+    "FLORESTA":FLORESTA,
+    "MONTANHA":MONTANHA,
+    "AGUA":AGUA
+}
 
 # Definir o custo de cada tipo de terreno
 CUSTO = {
@@ -25,35 +34,40 @@ pygame.init()
 # Definir as dimensões da tela e o tamanho dos tiles
 LARGURA_TELA = 940
 ALTURA_TELA = 1280
-TAMANHO_TILE = 50
+TAMANHO_TILE = 22
 
 # Criar a janela
 screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
 
 # Definir as dimensões da matriz do terreno
-LINHAS = 10
-COLUNAS = 10
+LINHAS = 42
+COLUNAS = 42
 
 # Definir o terreno manualmente
 
-terreno = [    [FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA],
-    [FLORESTA, GRAMA, GRAMA, FLORESTA, GRAMA, FLORESTA, GRAMA, FLORESTA, GRAMA, GRAMA],
-    [FLORESTA, GRAMA, FLORESTA, FLORESTA, AGUA, GRAMA, AREIA, FLORESTA, FLORESTA, AGUA],
-    [FLORESTA, GRAMA, MONTANHA, FLORESTA, AGUA, GRAMA, GRAMA, MONTANHA, FLORESTA, AGUA],
-    [FLORESTA, GRAMA, MONTANHA, GRAMA, GRAMA, MONTANHA, MONTANHA, MONTANHA, GRAMA, GRAMA],
-    [FLORESTA, GRAMA, GRAMA, AGUA, AGUA, GRAMA, GRAMA, GRAMA, AGUA, AGUA],
-    [FLORESTA, GRAMA, GRAMA, AGUA, AGUA, GRAMA, AREIA, GRAMA, AGUA, AGUA],
-    [FLORESTA, GRAMA, FLORESTA, FLORESTA, AGUA, GRAMA, AREIA, FLORESTA, FLORESTA, AGUA],
-    [FLORESTA, FLORESTA, MONTANHA, FLORESTA, AGUA, GRAMA, GRAMA, MONTANHA, FLORESTA, AGUA],
-    [FLORESTA, GRAMA, MONTANHA, GRAMA, GRAMA, MONTANHA, MONTANHA, MONTANHA, GRAMA, GRAMA]
-]
-
-
+terreno = cria_terreno.retorna_terreno()
+terreno_convertido= []
+for linha in terreno:
+    linha_convertida = []
+    for item in linha:
+        linha_convertida.append(converte_variavel[item])
+    terreno_convertido.append(linha_convertida)
+# [    [FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA, FLORESTA],
+#     [FLORESTA, GRAMA, GRAMA, FLORESTA, GRAMA, FLORESTA, GRAMA, FLORESTA, GRAMA, GRAMA],
+#     [FLORESTA, GRAMA, FLORESTA, FLORESTA, AGUA, GRAMA, AREIA, FLORESTA, FLORESTA, AGUA],
+#     [FLORESTA, GRAMA, MONTANHA, FLORESTA, AGUA, GRAMA, GRAMA, MONTANHA, FLORESTA, AGUA],
+#     [FLORESTA, GRAMA, MONTANHA, GRAMA, GRAMA, MONTANHA, MONTANHA, MONTANHA, GRAMA, GRAMA],
+#     [FLORESTA, GRAMA, GRAMA, AGUA, AGUA, GRAMA, GRAMA, GRAMA, AGUA, AGUA],
+#     [FLORESTA, GRAMA, GRAMA, AGUA, AGUA, GRAMA, AREIA, GRAMA, AGUA, AGUA],
+#     [FLORESTA, GRAMA, FLORESTA, FLORESTA, AGUA, GRAMA, AREIA, FLORESTA, FLORESTA, AGUA],
+#     [FLORESTA, FLORESTA, MONTANHA, FLORESTA, AGUA, GRAMA, GRAMA, MONTANHA, FLORESTA, AGUA],
+#     [FLORESTA, GRAMA, MONTANHA, GRAMA, GRAMA, MONTANHA, MONTANHA, MONTANHA, GRAMA, GRAMA]
+# ]
+print(terreno)
+print(terreno_convertido)
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (0, 0)
-ponto_destino = (9, 9)
-#inicial = (25, 28) dungeon1 = (6, 33) dungeon2 = (40, 18) dungeon3 = (25, 2) porta = (7, 6) espada = (3, 2)
-
+ponto_destino = (2, 3)
 
 def calcular_distancia(ponto1, ponto2):
     x1, y1 = ponto1
@@ -88,9 +102,9 @@ def custo(celula_atual, vizinho):
     else:
         return float('inf')
 
-def algoritmo_a_estrela(terreno, ponto_partida, ponto_destino):
+def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
     # Criar as células do terreno
-    celulas = [[Celula((linha, coluna), CUSTO[terreno[linha][coluna]]) for coluna in range(COLUNAS)] for linha in range(LINHAS)]
+    celulas = [[Celula((linha, coluna), CUSTO[terreno_convertido[linha][coluna]]) for coluna in range(COLUNAS)] for linha in range(LINHAS)]
 
     # Conectar as células aos seus vizinhos
     for linha in range(LINHAS):
@@ -172,26 +186,26 @@ def algoritmo_a_estrela(terreno, ponto_partida, ponto_destino):
 
 # Loop principal do jogo
 while True:
-    print(algoritmo_a_estrela(terreno, ponto_partida, ponto_destino))
+    print(algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino))
     # Capturar os eventos do pygame
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
     
-    # Desenhar o terreno na tela
+    # Desenhar o terreno_convertido na tela
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
             # Define a cor da célula com base no valor de custo
-            if terreno[linha][coluna] == GRAMA:
+            if terreno_convertido[linha][coluna] == GRAMA:
                 cor = (34, 177, 76)  # Verde para a grama
-            elif terreno[linha][coluna] == AREIA:
+            elif terreno_convertido[linha][coluna] == AREIA:
                 cor = (255, 255, 102)  # Amarelo para a areia
-            elif terreno[linha][coluna] == FLORESTA:
+            elif terreno_convertido[linha][coluna] == FLORESTA:
                 cor = (0, 102, 0)  # Verde escuro para a floresta
-            elif terreno[linha][coluna] == MONTANHA:
+            elif terreno_convertido[linha][coluna] == MONTANHA:
                 cor = (64, 64, 64)  # Cinza para a montanha
-            elif terreno[linha][coluna] == AGUA:
+            elif terreno_convertido[linha][coluna] == AGUA:
                 cor = (0, 0, 255)  # Azul para a água
             
             # Desenhar o tile na tela

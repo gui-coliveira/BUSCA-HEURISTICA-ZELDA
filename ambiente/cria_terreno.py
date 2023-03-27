@@ -5,6 +5,7 @@ tipo_terreno = {
     "m":"MONTANHA",
     "w":"AGUA"
 }
+
 terreno =[]
 
 with open("/home/driven/Documentos/Uesb/IA/BUSCA-HEURISTICA-ZELDA/ambiente/terreno.txt", "r") as arquivo:
@@ -15,4 +16,6 @@ with open("/home/driven/Documentos/Uesb/IA/BUSCA-HEURISTICA-ZELDA/ambiente/terre
             if caracter != '\n':
                 temp.append(tipo_terreno[caracter])
         terreno.append(temp)
-print(terreno)
+
+def retorna_terreno():
+    return terreno
