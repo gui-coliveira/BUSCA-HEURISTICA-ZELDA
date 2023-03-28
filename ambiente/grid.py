@@ -18,7 +18,7 @@ converte_variavel = {
     "AGUA": AGUA
 }
 
-# Definir o custo de cada tipo de terreno
+# Definir o custo de cada tipo de terrenocl
 CUSTO = {
     GRAMA: 10,
     AREIA: 20,
@@ -57,7 +57,11 @@ print(terreno)
 print(terreno_convertido)
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (27, 24)
-ponto_destino = (32, 5)
+ponto_destino1 = (32, 5)
+ponto_destino2 = (17, 39)
+ponto_destino3 = (2, 25)
+ponto_espada = (2, 3)
+
 
 
 def calcular_distancia(ponto1, ponto2):
@@ -85,8 +89,8 @@ class Celula:
         self.visitada = False
 
 
-def heuristica(celula_atual, ponto_destino):
-    return calcular_distancia(celula_atual.posicao, ponto_destino) * 10
+def heuristica(celula_atual, ponto_destino1):
+    return calcular_distancia(celula_atual.posicao, ponto_destino1) * 10
 
 
 def custo(celula_atual, vizinho):
@@ -96,7 +100,7 @@ def custo(celula_atual, vizinho):
         return float('inf')
 
 
-def desenhar_caminho(caminho):
+def desenhar_caminho(caminho, ponto_partida, ponto_destino):
     # Desenhar o ponto de partida
     pygame.draw.rect(screen, (0, 255, 242), (ponto_partida[1] *
                                              TAMANHO_TILE, ponto_partida[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
@@ -117,7 +121,7 @@ def desenhar_caminho(caminho):
         pygame.time.wait(300)
 
 
-def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
+def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino1):
     # Criar as células do terreno
     celulas = [[Celula((linha, coluna), CUSTO[terreno_convertido[linha][coluna]])
                 for coluna in range(COLUNAS)] for linha in range(LINHAS)]
@@ -152,12 +156,15 @@ def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
         celula_atual = min(aberta, key=lambda celula: celula.f + celula.h)
 
         # Se a célula atual for o ponto de destino, retornar o caminho encontrado
-        if celula_atual.posicao == ponto_destino:
+        if celula_atual.posicao == ponto_destino1:
             caminho = []
+            custo_total = 0
             while celula_atual:
                 caminho.append(celula_atual.posicao)
                 celula_atual = celula_atual.pai
-            return caminho[::-1]
+                if celula_atual:
+                    custo_total+= celula_atual.custo
+            return (caminho[::-1], custo_total)
 
         # Remover a célula atual da lista aberta e adicioná-la à lista fechada
         aberta.remove(celula_atual)
@@ -181,25 +188,28 @@ def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
 
             # Atualizar os valores de g, h e f do vizinho
             vizinho.g = novo_g
-            vizinho.h = heuristica(vizinho, ponto_destino)
+            vizinho.h = heuristica(vizinho, ponto_destino1)
             vizinho.f = vizinho.g + vizinho.h
             vizinho.pai = celula_atual
 
     # Encontrar o caminho mais curto
     caminho = []
-    celula_atual = celulas[ponto_destino[0]][ponto_destino[1]]
+    print("passei aqui")
+    celula_atual = celulas[ponto_destino1[0]][ponto_destino1[1]]
     while celula_atual.pai is not None:
         caminho.append(celula_atual.posicao)
         celula_atual = celula_atual.pai
     caminho.append(ponto_partida)
 
+    if caminho:
+        return (caminho, custo_total)
     # Se não houver caminho para o ponto de destino, retornar None
     return None
 
 
 # Loop principal do jogo
 while True:
-    print(algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino))
+    print(algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino1))
     # Capturar os eventos do pygame
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -226,11 +236,11 @@ while True:
                              linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
     # Obter o caminho encontrado pelo algoritmo A*
-    caminho = algoritmo_a_estrela(
-        terreno_convertido, ponto_partida, ponto_destino)
+    caminho, custo_total = algoritmo_a_estrela(
+        terreno_convertido, ponto_partida, ponto_destino2)
 
     # Desenhar o caminho encontrado
-    desenhar_caminho(caminho)
+    desenhar_caminho(caminho, ponto_partida, ponto_destino2)
 
     # Atualizar a tela
     pygame.display.update()
