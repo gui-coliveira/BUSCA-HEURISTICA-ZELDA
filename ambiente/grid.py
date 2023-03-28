@@ -1,6 +1,7 @@
 import pygame
 import math
 import cria_terreno
+import time
 
 # Definir as cores dos diferentes tipos de terreno
 GRAMA = (124, 252, 0)
@@ -26,7 +27,6 @@ CUSTO = {
     AGUA: 180
 }
 
-VERMELHO = (255, 0, 0)
 
 # Inicializar o pygame
 pygame.init()
@@ -56,8 +56,8 @@ for linha in terreno:
 print(terreno)
 print(terreno_convertido)
 # Adicionar as coordenadas do ponto de partida e destino
-ponto_partida = (0, 0)
-ponto_destino = (2, 3)
+ponto_partida = (27, 24)
+ponto_destino = (32, 5)
 
 
 def calcular_distancia(ponto1, ponto2):
@@ -94,6 +94,27 @@ def custo(celula_atual, vizinho):
         return celula_atual.custo + vizinho.custo
     else:
         return float('inf')
+
+
+def desenhar_caminho(caminho):
+    # Desenhar o ponto de partida
+    pygame.draw.rect(screen, (0, 255, 242), (ponto_partida[1] *
+                                             TAMANHO_TILE, ponto_partida[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+
+    # Desenhar o ponto de destino
+    pygame.draw.rect(screen, (79, 79, 79), (ponto_destino[1] *
+                                            TAMANHO_TILE, ponto_destino[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+
+    pygame.display.update()
+    pygame.time.wait(1000)
+
+    for celula in caminho:
+        x, y = celula
+        rect = pygame.Rect(y * TAMANHO_TILE, x * TAMANHO_TILE,
+                           TAMANHO_TILE, TAMANHO_TILE)
+        pygame.draw.rect(screen, (255, 0, 0), rect)
+        pygame.display.update()
+        pygame.time.wait(300)
 
 
 def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
@@ -172,12 +193,6 @@ def algoritmo_a_estrela(terreno_convertido, ponto_partida, ponto_destino):
         celula_atual = celula_atual.pai
     caminho.append(ponto_partida)
 
-    # Pintar o caminho mais curto de vermelho
-    for posicao in caminho:
-        x, y = posicao
-        pygame.draw.rect(screen, VERMELHO, (y*TAMANHO_TILE,
-                         x*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
-
     # Se não houver caminho para o ponto de destino, retornar None
     return None
 
@@ -196,27 +211,26 @@ while True:
         for coluna in range(COLUNAS):
             # Define a cor da célula com base no valor de custo
             if terreno_convertido[linha][coluna] == GRAMA:
-                cor = (34, 177, 76)  # Verde para a grama
+                cor = (140, 211, 70)  # Verde para a grama
             elif terreno_convertido[linha][coluna] == AREIA:
-                cor = (255, 255, 102)  # Amarelo para a areia
+                cor = (196, 188, 148)  # Amarelo para a areia
             elif terreno_convertido[linha][coluna] == FLORESTA:
-                cor = (0, 102, 0)  # Verde escuro para a floresta
+                cor = (1, 115, 53)  # Verde escuro para a floresta
             elif terreno_convertido[linha][coluna] == MONTANHA:
-                cor = (64, 64, 64)  # Cinza para a montanha
+                cor = (82, 70, 44)  # Cinza para a montanha
             elif terreno_convertido[linha][coluna] == AGUA:
-                cor = (0, 0, 255)  # Azul para a água
+                cor = (45, 72, 181)  # Azul para a água
 
             # Desenhar o tile na tela
             pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
-                             linha * TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+                             linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
+
+    # Obter o caminho encontrado pelo algoritmo A*
+    caminho = algoritmo_a_estrela(
+        terreno_convertido, ponto_partida, ponto_destino)
+
+    # Desenhar o caminho encontrado
+    desenhar_caminho(caminho)
 
     # Atualizar a tela
     pygame.display.update()
-if encontrou_destino:
-    # Pintar o caminho mais curto de vermelho
-    celula_atual = celula_destino
-    while celula_atual.pai is not None:
-        celula_atual = celula_atual.pai
-        x, y = celula_atual.posicao
-        pygame.draw.rect(screen, VERMELHO, (y * TAMANHO_TILE,
-                         x * TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
