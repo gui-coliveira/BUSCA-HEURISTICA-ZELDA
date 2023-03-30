@@ -1,7 +1,7 @@
 import pygame
 import math
 import cria_terreno
-import time
+import converte_terreno
 
 # Definir as cores dos diferentes tipos de terreno
 GRAMA = (124, 252, 0)
@@ -46,15 +46,11 @@ COLUNAS = 42
 # Definir o terreno manualmente
 
 terreno = cria_terreno.retorna_terreno()
-terreno_convertido = []
-for linha in terreno:
-    linha_convertida = []
-    for item in linha:
-        linha_convertida.append(converte_variavel[item])
-    terreno_convertido.append(linha_convertida)
+dungeon1 = cria_terreno.retorna_dungeon1()
+dungeon2 = cria_terreno.retorna_dungeon2()
+dungeon3 = cria_terreno.retorna_dungeon3()
+terreno_convertido = converte_terreno.converte_terreno(terreno, converte_variavel)
 
-print(terreno)
-print(terreno_convertido)
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (27, 24)
 ponto_destino1 = (32, 5)
@@ -117,7 +113,7 @@ def desenhar_caminho(caminho_recente, ponto_start, ponto_dest):
                            TAMANHO_TILE, TAMANHO_TILE)
         pygame.draw.rect(screen, (255, 0, 0), rect)
         pygame.display.update()
-        pygame.time.wait(300)
+        pygame.time.wait(100)
 
 
 def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
@@ -235,6 +231,8 @@ while destinos:
             menor = custo_total
             indice_destino=i
             caminho_atual = caminho
+        # if partida == ponto_destino1:
+        #     terreno_convertido = converte_terreno.converte_terreno()
     desenhar_caminho(caminho_atual, partida, destinos[indice_destino])
     # pygame.display.update()
     partida = destinos[indice_destino]
