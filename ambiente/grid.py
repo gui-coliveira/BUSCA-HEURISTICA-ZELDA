@@ -1,5 +1,6 @@
 import pygame
 import math
+import dg
 import cria_terreno
 import converte_terreno
 
@@ -49,7 +50,8 @@ terreno = cria_terreno.retorna_terreno()
 dungeon1 = cria_terreno.retorna_dungeon1()
 dungeon2 = cria_terreno.retorna_dungeon2()
 dungeon3 = cria_terreno.retorna_dungeon3()
-terreno_convertido = converte_terreno.converte_terreno(terreno, converte_variavel)
+terreno_convertido = converte_terreno.converte_terreno(
+    terreno, converte_variavel)
 
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (27, 24)
@@ -104,16 +106,15 @@ def desenhar_caminho(caminho_recente, ponto_start, ponto_dest):
     pygame.draw.rect(screen, (79, 79, 79), (ponto_dest[1] *
                                             TAMANHO_TILE, ponto_dest[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
 
-    pygame.display.update()
-    pygame.time.wait(100)
-
+    # Preencher o caminho com a cor vermelha
+    clock = pygame.time.Clock()
     for celula in caminho_recente:
         x, y = celula
         rect = pygame.Rect(y * TAMANHO_TILE, x * TAMANHO_TILE,
                            TAMANHO_TILE, TAMANHO_TILE)
-        pygame.draw.rect(screen, (255, 0, 0), rect)
+        screen.fill((255, 0, 0), rect=rect)
         pygame.display.update()
-        pygame.time.wait(100)
+        clock.tick(10)
 
 
 def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
@@ -158,7 +159,7 @@ def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
                 caminho.append(celula_atual.posicao)
                 celula_atual = celula_atual.pai
                 if celula_atual:
-                    custo_total+= celula_atual.custo
+                    custo_total += celula_atual.custo
             return (caminho[::-1], custo_total)
 
         # Remover a célula atual da lista aberta e adicioná-la à lista fechada
@@ -193,10 +194,10 @@ def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
 # Loop principal do jogo
 # while True:
 # Capturar os eventos do pygame
-for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-        pygame.quit()
-        quit()
+# for event in pygame.event.get():
+#     if event.type == pygame.QUIT:
+#         pygame.quit()
+#         quit()
 
 # Desenhar o terreno_convertido na tela
 for linha in range(LINHAS):
@@ -215,34 +216,38 @@ for linha in range(LINHAS):
 
         # Desenhar o tile na tela
         pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
-                            linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
+                                       linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
 destinos = [ponto_destino1, ponto_destino2, ponto_destino3]
 menor = 100000000000
-indice_destino =0
+indice_destino = 0
 partida = ponto_partida
 caminho_atual = []
 while destinos:
-    for i, destino_melhor in enumerate(destinos):           
+    for i, destino_melhor in enumerate(destinos):
         # Obter o caminho encontrado pelo algoritmo A*
         caminho, custo_total = algoritmo_a_estrela(
             terreno_convertido, partida, destino_melhor)
         if menor > custo_total:
             menor = custo_total
-            indice_destino=i
+            indice_destino = i
             caminho_atual = caminho
-        # if partida == ponto_destino1:
-        #     terreno_convertido = converte_terreno.converte_terreno()
+
     desenhar_caminho(caminho_atual, partida, destinos[indice_destino])
+    dg.dungeons(dungeon1)
+
+    # Colocar função para abrir dungeons no lugar desse input
+    # input()
+
     # pygame.display.update()
     partida = destinos[indice_destino]
     destinos.remove(destinos[indice_destino])
     menor = 100000000000
-    
-    
+
 
 # Desenhar o caminho encontrado
 # desenhar_caminho(caminho, ponto_partida, ponto_destino1)
 
 # Atualizar a tela
 pygame.display.update()
+# input("Pressione Enter para continuar...")

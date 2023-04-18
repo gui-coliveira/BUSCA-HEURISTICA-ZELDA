@@ -1,0 +1,32 @@
+
+2023-04-17 19:05:32: ---- Analysis requested -----
+
+2023-04-17 19:05:32: ProjectCodeMeter version: Pro v2.43
+
+2023-04-17 19:05:32: Analysis type: 0
+
+2023-04-17 19:05:32: Analysis mode: 0
+
+2023-04-17 19:05:32: Project Folder: D:\Pastas\Documentos\UESB\dev\BUSCA-HEURISTICA-ZELDA\
+
+2023-04-17 19:05:32: User: Unregistered Trial
+
+2023-04-17 19:05:41:  source files: 0
+
+
+2023-04-17 19:05:46:  source size: 0 (0Byte)
+
+
+2023-04-17 19:05:47:  done.
+
+
+2023-04-17 19:05:47: Analysis request pending state: TRUE
+
+2023-04-17 19:05:47: No Source files exist in the project folder.
+Please select a folder that contains source code files.
+Supported source code languages are:
+ Java, C, C++, HTML, C#, J#, JavaScript, D, Objective-C, ActionScript, ActionScript-XML, PHP, Unreal, C/C++ Header, MetaTrader, Arduino, TypeScript, CUDA, RenderScript.
+
+2023-04-17 19:05:47: finishing analysis
+
+2023-04-17 19:05:47: DONE. back to idle.
