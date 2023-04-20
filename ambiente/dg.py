@@ -191,10 +191,9 @@ def dungeons(terreno):
         terreno_convertido, ponto_partida, ponto_destino)
 
     desenhar_caminho(caminho, ponto_partida, ponto_destino)
-
-    # Desenhar o caminho encontrado
-    # desenhar_caminho(caminho, ponto_partida, ponto_destino1)
-
+    LARGURA_TELA = 800
+    ALTURA_TELA = 800
+    screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     # Atualizar a tela
     pygame.display.update()
 

@@ -3,6 +3,7 @@ import math
 import dg
 import cria_terreno
 import converte_terreno
+import desenha_terreno
 
 # Definir as cores dos diferentes tipos de terreno
 GRAMA = (124, 252, 0)
@@ -194,29 +195,13 @@ def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
 # Loop principal do jogo
 # while True:
 # Capturar os eventos do pygame
-# for event in pygame.event.get():
-#     if event.type == pygame.QUIT:
-#         pygame.quit()
-#         quit()
+for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+        pygame.quit()
+        quit()
 
 # Desenhar o terreno_convertido na tela
-for linha in range(LINHAS):
-    for coluna in range(COLUNAS):
-        # Define a cor da célula com base no valor de custo
-        if terreno_convertido[linha][coluna] == GRAMA:
-            cor = (140, 211, 70)  # Verde para a grama
-        elif terreno_convertido[linha][coluna] == AREIA:
-            cor = (196, 188, 148)  # Amarelo para a areia
-        elif terreno_convertido[linha][coluna] == FLORESTA:
-            cor = (1, 115, 53)  # Verde escuro para a floresta
-        elif terreno_convertido[linha][coluna] == MONTANHA:
-            cor = (82, 70, 44)  # Cinza para a montanha
-        elif terreno_convertido[linha][coluna] == AGUA:
-            cor = (45, 72, 181)  # Azul para a água
-
-        # Desenhar o tile na tela
-        pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
-                                       linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
+desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, TAMANHO_TILE,screen)
 
 destinos = [ponto_destino1, ponto_destino2, ponto_destino3]
 menor = 100000000000
@@ -224,6 +209,11 @@ indice_destino = 0
 partida = ponto_partida
 caminho_atual = []
 while destinos:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+            
     for i, destino_melhor in enumerate(destinos):
         # Obter o caminho encontrado pelo algoritmo A*
         caminho, custo_total = algoritmo_a_estrela(
@@ -234,10 +224,14 @@ while destinos:
             caminho_atual = caminho
 
     desenhar_caminho(caminho_atual, partida, destinos[indice_destino])
-    dg.dungeons(dungeon1)
-
-    # Colocar função para abrir dungeons no lugar desse input
-    # input()
+    if destinos[indice_destino] == ponto_destino1:
+        dg.dungeons(dungeon1)
+    elif destinos[indice_destino] == ponto_destino2:
+        dg.dungeons(dungeon2)
+    elif destinos[indice_destino] == ponto_destino3:
+        dg.dungeons(dungeon3)
+    
+    desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, TAMANHO_TILE,screen)
 
     # pygame.display.update()
     partida = destinos[indice_destino]
