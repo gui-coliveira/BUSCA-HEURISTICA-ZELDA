@@ -11,13 +11,20 @@ AREIA = (244, 164, 96)
 FLORESTA = (34, 139, 34)
 MONTANHA = (139, 137, 137)
 AGUA = (30, 144, 255)
+PRETO = (0, 0, 0)
+BRANCO = (255, 255, 255)
+AMARELO = (201, 176, 10)
 
 converte_variavel = {
     "GRAMA": GRAMA,
     "AREIA": AREIA,
     "FLORESTA": FLORESTA,
     "MONTANHA": MONTANHA,
-    "AGUA": AGUA
+    "AGUA": AGUA,
+    "PRETO": PRETO,
+    "BRANCO": BRANCO,
+    "AMARELO": AMARELO
+
 }
 
 # Definir o custo de cada tipo de terrenocl
@@ -51,8 +58,11 @@ terreno = cria_terreno.retorna_terreno()
 dungeon1 = cria_terreno.retorna_dungeon1()
 dungeon2 = cria_terreno.retorna_dungeon2()
 dungeon3 = cria_terreno.retorna_dungeon3()
+tela_final = cria_terreno.retorna_telaFinal()
 terreno_convertido = converte_terreno.converte_terreno(
     terreno, converte_variavel)
+final_convertido = converte_terreno.converte_terreno(
+    tela_final, converte_variavel)
 
 # Adicionar as coordenadas do ponto de partida e destino
 ponto_partida = (27, 24)
@@ -101,21 +111,21 @@ def custo(celula_atual, vizinho):
 def desenhar_caminho(caminho_recente, ponto_start, ponto_dest):
     # Desenhar o ponto de partida
     pygame.draw.rect(screen, (0, 255, 242), (ponto_start[1] *
-                                             TAMANHO_TILE, ponto_start[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+                                             TAMANHO_TILE, ponto_start[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
     # Desenhar o ponto de destino
-    pygame.draw.rect(screen, (79, 79, 79), (ponto_dest[1] *
-                                            TAMANHO_TILE, ponto_dest[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+    pygame.draw.rect(screen, (0, 250, 229), (ponto_dest[1] *
+                                             TAMANHO_TILE, ponto_dest[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
     # Preencher o caminho com a cor vermelha
     clock = pygame.time.Clock()
     for celula in caminho_recente:
         x, y = celula
         rect = pygame.Rect(y * TAMANHO_TILE, x * TAMANHO_TILE,
-                           TAMANHO_TILE, TAMANHO_TILE)
+                           TAMANHO_TILE-1, TAMANHO_TILE-1)
         screen.fill((255, 0, 0), rect=rect)
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(7)
 
 
 def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
@@ -201,7 +211,18 @@ for event in pygame.event.get():
         quit()
 
 # Desenhar o terreno_convertido na tela
-desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, TAMANHO_TILE,screen)
+desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
+                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
+
+pygame.draw.rect(screen, (255, 0, 0), (ponto_partida[1] *
+                                       TAMANHO_TILE, ponto_partida[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
+
+pygame.draw.rect(screen, (0, 250, 229), (ponto_destino1[1] *
+                                         TAMANHO_TILE, ponto_destino1[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
+
+pygame.display.update()
+pygame.time.delay(3500)
+
 
 destinos = [ponto_destino1, ponto_destino2, ponto_destino3]
 menor = 100000000000
@@ -213,7 +234,7 @@ while destinos:
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-            
+
     for i, destino_melhor in enumerate(destinos):
         # Obter o caminho encontrado pelo algoritmo A*
         caminho, custo_total = algoritmo_a_estrela(
@@ -225,18 +246,32 @@ while destinos:
 
     desenhar_caminho(caminho_atual, partida, destinos[indice_destino])
     if destinos[indice_destino] == ponto_destino1:
-        dg.dungeons(dungeon1)
+        dg.dungeons(dungeon1, 1)
     elif destinos[indice_destino] == ponto_destino2:
-        dg.dungeons(dungeon2)
+        dg.dungeons(dungeon2, 2)
     elif destinos[indice_destino] == ponto_destino3:
-        dg.dungeons(dungeon3)
-    
-    desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, TAMANHO_TILE,screen)
+        dg.dungeons(dungeon3, 3)
+
+    desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
+                                    AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
 
     # pygame.display.update()
     partida = destinos[indice_destino]
     destinos.remove(destinos[indice_destino])
     menor = 100000000000
+
+caminho, custo_total = algoritmo_a_estrela(
+    terreno_convertido, ponto_destino3, ponto_espada)
+if menor > custo_total:
+    menor = custo_total
+    indice_destino = i
+    caminho_atual = caminho
+
+desenhar_caminho(caminho_atual, ponto_destino3, ponto_espada)
+pygame.time.delay(500)
+
+desenha_terreno.desenha_terreno(final_convertido, LINHAS, COLUNAS, GRAMA,
+                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
 
 
 # Desenhar o caminho encontrado
@@ -244,4 +279,4 @@ while destinos:
 
 # Atualizar a tela
 pygame.display.update()
-# input("Pressione Enter para continuar...")
+input()
