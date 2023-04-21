@@ -4,7 +4,7 @@ import cria_terreno
 import converte_terreno
 
 
-def dungeons(terreno):
+def dungeons(terreno, num_dg):
     # Definir as cores dos diferentes tipos de terreno
     AREIA = (244, 164, 96)
     MONTANHA = (139, 137, 137)
@@ -40,8 +40,15 @@ def dungeons(terreno):
         terreno, converte_variavel)
 
     # Adicionar as coordenadas do ponto de partida e destino
-    ponto_partida = (25, 14)
-    ponto_destino = (3, 13)
+    if num_dg == 1:
+        ponto_partida = (26, 14)
+        ponto_destino = (3, 13)
+    elif num_dg == 2:
+        ponto_partida = (25, 13)
+        ponto_destino = (2, 13)
+    else:
+        ponto_partida = (25, 14)
+        ponto_destino = (19, 15)
 
     def calcular_distancia(ponto1, ponto2):
         x1, y1 = ponto1
@@ -78,21 +85,27 @@ def dungeons(terreno):
     def desenhar_caminho(caminho_recente, ponto_start, ponto_dest):
         # Desenhar o ponto de partida
         pygame.draw.rect(screen, (0, 255, 242), (ponto_start[1] *
-                                                 TAMANHO_TILE, ponto_start[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+                                                 TAMANHO_TILE, ponto_start[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
         # Desenhar o ponto de destino
-        pygame.draw.rect(screen, (79, 79, 79), (ponto_dest[1] *
-                                                TAMANHO_TILE, ponto_dest[0]*TAMANHO_TILE, TAMANHO_TILE, TAMANHO_TILE))
+        pygame.draw.rect(screen, (0, 250, 229), (ponto_dest[1] *
+                                                 TAMANHO_TILE, ponto_dest[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
-        # Preencher o caminho com a cor vermelha
+        # Preencher o caminho com a cor vermelha (ida) e laranja (volta)
         clock = pygame.time.Clock()
-        for celula in caminho_recente:
+        caminho_completo = caminho_recente + \
+            caminho_recente[::-1]  # inverte e concatena a lista
+        for i, celula in enumerate(caminho_completo):
             x, y = celula
+            cor = (255, 0, 0)  # cor padrão é vermelha
+            # se a célula pertence à segunda metade da lista
+            if i >= len(caminho_completo) / 2:
+                cor = (255, 165, 0)  # muda a cor para laranja
             rect = pygame.Rect(y * TAMANHO_TILE, x * TAMANHO_TILE,
-                               TAMANHO_TILE, TAMANHO_TILE)
-            screen.fill((255, 0, 0), rect=rect)
+                               TAMANHO_TILE-1, TAMANHO_TILE-1)
+            screen.fill(cor, rect=rect)
             pygame.display.update()
-            clock.tick(10)
+            clock.tick(7)
 
     def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
         # Criar as células do terreno
