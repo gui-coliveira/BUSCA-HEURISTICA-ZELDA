@@ -24,9 +24,9 @@ def dungeons(terreno, num_dg):
     pygame.init()
 
     # Definir as dimensões da tela e o tamanho dos tiles
-    LARGURA_TELA = 600
-    ALTURA_TELA = 600
-    TAMANHO_TILE = 19
+    LARGURA_TELA = 700
+    ALTURA_TELA = 700
+    TAMANHO_TILE = 25
 
     # Criar a janela
     screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -204,8 +204,7 @@ def dungeons(terreno, num_dg):
         terreno_convertido, ponto_partida, ponto_destino)
 
     desenhar_caminho(caminho, ponto_partida, ponto_destino)
-    LARGURA_TELA = 800
-    ALTURA_TELA = 800
+
     screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
     # Atualizar a tela
     pygame.display.update()

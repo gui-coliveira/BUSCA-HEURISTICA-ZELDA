@@ -41,8 +41,8 @@ CUSTO = {
 pygame.init()
 
 # Definir as dimensões da tela e o tamanho dos tiles
-LARGURA_TELA = 800
-ALTURA_TELA = 800
+LARGURA_TELA = 798
+ALTURA_TELA = 798
 TAMANHO_TILE = 19
 
 # Criar a janela
@@ -221,7 +221,8 @@ pygame.draw.rect(screen, (0, 250, 229), (ponto_destino1[1] *
                                          TAMANHO_TILE, ponto_destino1[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
 pygame.display.update()
-pygame.time.delay(3500)
+
+pygame.time.delay(3000)
 
 
 destinos = [ponto_destino1, ponto_destino2, ponto_destino3]
@@ -251,6 +252,8 @@ while destinos:
         dg.dungeons(dungeon2, 2)
     elif destinos[indice_destino] == ponto_destino3:
         dg.dungeons(dungeon3, 3)
+
+    screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
 
     desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
                                     AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
