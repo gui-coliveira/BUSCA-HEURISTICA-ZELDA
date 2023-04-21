@@ -1,7 +1,8 @@
 import pygame
 
-def desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, TAMANHO_TILE, screen):
-    
+
+def desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen):
+
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
             # Define a cor da célula com base no valor de custo
@@ -15,7 +16,13 @@ def desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA,
                 cor = (82, 70, 44)  # Cinza para a montanha
             elif terreno_convertido[linha][coluna] == AGUA:
                 cor = (45, 72, 181)  # Azul para a água
+            elif terreno_convertido[linha][coluna] == PRETO:
+                cor = (0, 0, 0)  # PRETO
+            elif terreno_convertido[linha][coluna] == BRANCO:
+                cor = (255, 255, 255)  # BRANCO
+            elif terreno_convertido[linha][coluna] == AMARELO:
+                cor = (201, 176, 10)  # AMARELO
 
             # Desenhar o tile na tela
             pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
-                                        linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
+                                           linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
