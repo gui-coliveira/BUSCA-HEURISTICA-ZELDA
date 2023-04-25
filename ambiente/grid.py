@@ -71,6 +71,7 @@ ponto_destino2 = (17, 39)
 ponto_destino3 = (2, 25)
 ponto_espada = (2, 3)
 
+# # Carregar a imagem do ícone
 
 def calcular_distancia(ponto1, ponto2):
     x1, y1 = ponto1
