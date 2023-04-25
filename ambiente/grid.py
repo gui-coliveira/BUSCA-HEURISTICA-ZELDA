@@ -162,6 +162,9 @@ def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
         # Encontrar a célula na lista aberta com o menor valor de f + h
         celula_atual = min(aberta, key=lambda celula: celula.f + celula.h)
 
+        # Imprime caminho encontrado
+        print(celula_atual.posicao)
+
         # Se a célula atual for o ponto de destino, retornar o caminho encontrado
         if celula_atual.posicao == ponto_destino1:
             caminho = []
@@ -210,6 +213,7 @@ for event in pygame.event.get():
         pygame.quit()
         quit()
 
+print('---------- CAMINHO PRINCIPAL ----------')
 # Desenhar o terreno_convertido na tela
 desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
                                 AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)

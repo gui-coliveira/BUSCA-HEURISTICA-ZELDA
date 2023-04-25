@@ -43,12 +43,15 @@ def dungeons(terreno, num_dg):
     if num_dg == 1:
         ponto_partida = (26, 14)
         ponto_destino = (3, 13)
+        print('---------- DUNGEON 1 ----------')
     elif num_dg == 2:
         ponto_partida = (25, 13)
         ponto_destino = (2, 13)
+        print('---------- DUNGEON 2 ----------')
     else:
         ponto_partida = (25, 14)
         ponto_destino = (19, 15)
+        print('---------- DUNGEON 3 ----------')
 
     def calcular_distancia(ponto1, ponto2):
         x1, y1 = ponto1
@@ -105,7 +108,7 @@ def dungeons(terreno, num_dg):
                                TAMANHO_TILE-1, TAMANHO_TILE-1)
             screen.fill(cor, rect=rect)
             pygame.display.update()
-            clock.tick(7)
+            clock.tick(80)
 
     def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
         # Criar as células do terreno
@@ -140,6 +143,9 @@ def dungeons(terreno, num_dg):
         while aberta:
             # Encontrar a célula na lista aberta com o menor valor de f + h
             celula_atual = min(aberta, key=lambda celula: celula.f + celula.h)
+
+            # Imprime caminho encontrado
+            print(celula_atual.posicao)
 
             # Se a célula atual for o ponto de destino, retornar o caminho encontrado
             if celula_atual.posicao == ponto_destino1:
@@ -206,6 +212,8 @@ def dungeons(terreno, num_dg):
     desenhar_caminho(caminho, ponto_partida, ponto_destino)
 
     screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
+
+    print('---------- SAI DA DUNGEON ----------')
     # Atualizar a tela
     pygame.display.update()
 
