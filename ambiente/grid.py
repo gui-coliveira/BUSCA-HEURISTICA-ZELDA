@@ -222,7 +222,7 @@ pygame.draw.rect(screen, (0, 250, 229), (ponto_destino1[1] *
 
 pygame.display.update()
 
-pygame.time.delay(3000)
+pygame.time.delay(2500)
 
 
 destinos = [ponto_destino1, ponto_destino2, ponto_destino3]

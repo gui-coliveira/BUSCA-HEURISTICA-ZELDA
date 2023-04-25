@@ -16,8 +16,8 @@ def dungeons(terreno, num_dg):
 
     # Definir o custo de cada tipo de terrenocl
     CUSTO = {
-        AREIA: 20,
-        MONTANHA: 150,
+        AREIA: 10,
+        MONTANHA: 9999,
     }
 
     # Inicializar o pygame
