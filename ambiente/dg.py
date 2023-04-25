@@ -144,9 +144,6 @@ def dungeons(terreno, num_dg):
             # Encontrar a célula na lista aberta com o menor valor de f + h
             celula_atual = min(aberta, key=lambda celula: celula.f + celula.h)
 
-            # Imprime caminho encontrado
-            print(celula_atual.posicao)
-
             # Se a célula atual for o ponto de destino, retornar o caminho encontrado
             if celula_atual.posicao == ponto_destino1:
                 caminho = []
@@ -184,28 +181,20 @@ def dungeons(terreno, num_dg):
 
         return None
 
-    # Loop principal do jogo
-    # while True:
-    # Capturar os eventos do pygame
-    # for event in pygame.event.get():
-    #     if event.type == pygame.QUIT:
-    #         pygame.quit()
-    #         quit()
-
     # Desenhar o terreno_convertido na tela
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
-            # Define a cor da célula com base no valor de custo
+            # Define a cor da célula
             if terreno_convertido[linha][coluna] == AREIA:
                 cor = (196, 188, 148)  # Amarelo para a areia
             elif terreno_convertido[linha][coluna] == MONTANHA:
-                cor = (82, 70, 44)  # Cinza para a montanha
+                cor = (82, 70, 44)  # Marrom para a montanha
 
             # Desenhar o tile na tela
             pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
                                            linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
-        # Obter o caminho encontrado pelo algoritmo A*
+    # Obter o caminho encontrado pelo algoritmo A*
     caminho = algoritmo_a_estrela(
         terreno_convertido, ponto_partida, ponto_destino)
 
@@ -213,8 +202,11 @@ def dungeons(terreno, num_dg):
 
     screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
 
+    caminho_str = ' -> '.join(str(i) for i in caminho)
+    print(caminho_str)
+
     print('---------- SAI DA DUNGEON ----------')
+    print('---------- CAMINHO PRINCIPAL ----------')
+
     # Atualizar a tela
     pygame.display.update()
-
-    # input("Pressione Enter para continuar...")
