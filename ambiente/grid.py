@@ -69,7 +69,7 @@ ponto_partida = (27, 24)
 ponto_destino1 = (32, 5)
 ponto_destino2 = (17, 39)
 ponto_destino3 = (1, 24)
-ponto_espada = (2, 1)
+ponto_espada = (1, 2)
 
 
 def calcular_distancia(ponto1, ponto2):
@@ -270,6 +270,7 @@ if menor > custo_total:
     caminho_atual = caminho
 
 desenhar_caminho(caminho_atual, ponto_destino3, ponto_espada)
+
 pygame.time.delay(500)
 
 desenha_terreno.desenha_terreno(final_convertido, LINHAS, COLUNAS, GRAMA,
