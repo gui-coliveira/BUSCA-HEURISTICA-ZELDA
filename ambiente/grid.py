@@ -210,7 +210,7 @@ print('---------- CAMINHO PRINCIPAL ----------')
 
 # Desenhar o terreno_convertido na tela
 desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
-                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
+                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, False)
 
 pygame.draw.rect(screen, (255, 0, 0), (ponto_partida[1] *
                                        TAMANHO_TILE, ponto_partida[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
@@ -255,7 +255,7 @@ while destinos:
     screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
 
     desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
-                                    AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
+                                    AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, False)
 
     partida = destinos[indice_destino]
     destinos.remove(destinos[indice_destino])
@@ -273,7 +273,7 @@ desenhar_caminho(caminho_atual, ponto_destino3, ponto_espada)
 pygame.time.delay(500)
 
 desenha_terreno.desenha_terreno(final_convertido, LINHAS, COLUNAS, GRAMA,
-                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen)
+                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, True)
 
 # Imprime o caminho até o ponto final
 caminho_str = ' -> '.join(str(i) for i in caminho)
