@@ -201,11 +201,13 @@ def dungeons(terreno, num_dg):
             # Desenhar o tile na tela
             pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
                                            linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
-            
+
             # Redimensionar a imagem
-            imagem_redimensionada_pingente = pygame.transform.scale(imagem_pingente, (TAMANHO_TILE, TAMANHO_TILE))
+            imagem_redimensionada_pingente = pygame.transform.scale(
+                imagem_pingente, (TAMANHO_TILE, TAMANHO_TILE))
             # Desenhar a imagem na célula (x, y)
-            screen.blit(imagem_redimensionada_pingente, (posicao_pingente_x*TAMANHO_TILE, posicao_pingente_y*TAMANHO_TILE))
+            screen.blit(imagem_redimensionada_pingente, (posicao_pingente_x *
+                        TAMANHO_TILE, posicao_pingente_y*TAMANHO_TILE))
     # Obter o caminho encontrado pelo algoritmo A*
     caminho = algoritmo_a_estrela(
         terreno_convertido, ponto_partida, ponto_destino)

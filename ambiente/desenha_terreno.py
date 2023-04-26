@@ -1,7 +1,8 @@
 import pygame
 
 
-def desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, telaFinal):
+def desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO,
+                    TAMANHO_TILE, screen, portaaberta, telaFinal):
 
     for linha in range(LINHAS):
         for coluna in range(COLUNAS):
@@ -26,20 +27,41 @@ def desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA, AREIA, FLORESTA,
             # Desenhar o tile na tela
             pygame.draw.rect(screen, cor, (coluna * TAMANHO_TILE,
                                            linha * TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
-        if telaFinal == False :
+        if telaFinal == False:
             # Carregar a imagem
             imagem_espada = pygame.image.load('./img/sword.png')
-            # Redimensionar a imagem
-            imagem_redimensionada_espada = pygame.transform.scale(imagem_espada, (TAMANHO_TILE, TAMANHO_TILE))
-            # Desenhar a imagem na célula (x, y)
-            screen.blit(imagem_redimensionada_espada, (2*TAMANHO_TILE, 3*TAMANHO_TILE))
 
+            # Redimensionar a imagem
+            imagem_redimensionada_espada = pygame.transform.scale(
+                imagem_espada, (TAMANHO_TILE, TAMANHO_TILE))
+
+            # Desenhar a imagem na célula (x, y)
+            screen.blit(imagem_redimensionada_espada,
+                        (2*TAMANHO_TILE, 1*TAMANHO_TILE))
+
+            # Carregar a imagem
             imagem_door = pygame.image.load('./img/door.png')
+            imagem_dooropen = pygame.image.load('./img/door_open.png')
+
             # Redimensionar a imagem
-            imagem_redimensionada_door = pygame.transform.scale(imagem_door, (TAMANHO_TILE, TAMANHO_TILE))
+            imagem_redimensionada_door = pygame.transform.scale(
+                imagem_door, (TAMANHO_TILE, TAMANHO_TILE))
+            imagem_redimensionada_dooropen = pygame.transform.scale(
+                imagem_dooropen, (TAMANHO_TILE, TAMANHO_TILE))
+
             # Desenhar a imagem na célula (x, y)
-            screen.blit(imagem_redimensionada_door, (5*TAMANHO_TILE, 32*TAMANHO_TILE))
+            screen.blit(imagem_redimensionada_door,
+                        (5*TAMANHO_TILE, 32*TAMANHO_TILE))
 
-            screen.blit(imagem_redimensionada_door, (39*TAMANHO_TILE, 17*TAMANHO_TILE))
+            screen.blit(imagem_redimensionada_door,
+                        (39*TAMANHO_TILE, 17*TAMANHO_TILE))
 
-            screen.blit(imagem_redimensionada_door, (25*TAMANHO_TILE, 2*TAMANHO_TILE))
+            screen.blit(imagem_redimensionada_door,
+                        (24*TAMANHO_TILE, 1*TAMANHO_TILE))
+
+            if portaaberta == False:
+                screen.blit(imagem_redimensionada_door,
+                            (6*TAMANHO_TILE, 5*TAMANHO_TILE))
+            else:
+                screen.blit(imagem_redimensionada_dooropen,
+                            (6*TAMANHO_TILE, 5*TAMANHO_TILE))

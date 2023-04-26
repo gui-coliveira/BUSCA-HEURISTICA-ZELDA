@@ -68,10 +68,8 @@ final_convertido = converte_terreno.converte_terreno(
 ponto_partida = (27, 24)
 ponto_destino1 = (32, 5)
 ponto_destino2 = (17, 39)
-ponto_destino3 = (2, 25)
-ponto_espada = (2, 3)
-
-# # Carregar a imagem do ícone
+ponto_destino3 = (1, 24)
+ponto_espada = (2, 1)
 
 
 def calcular_distancia(ponto1, ponto2):
@@ -210,7 +208,7 @@ print('---------- CAMINHO PRINCIPAL ----------')
 
 # Desenhar o terreno_convertido na tela
 desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
-                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, False)
+                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, False, False)
 
 pygame.draw.rect(screen, (255, 0, 0), (ponto_partida[1] *
                                        TAMANHO_TILE, ponto_partida[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
@@ -225,6 +223,7 @@ menor = 100000000000
 indice_destino = 0
 partida = ponto_partida
 caminho_atual = []
+portaaberta = False
 while destinos:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -250,12 +249,13 @@ while destinos:
     elif destinos[indice_destino] == ponto_destino2:
         dg.dungeons(dungeon2, 2)
     elif destinos[indice_destino] == ponto_destino3:
+        portaaberta = True
         dg.dungeons(dungeon3, 3)
 
     screen = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
 
     desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
-                                    AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, False)
+                                    AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, portaaberta, False)
 
     partida = destinos[indice_destino]
     destinos.remove(destinos[indice_destino])
@@ -273,7 +273,7 @@ desenhar_caminho(caminho_atual, ponto_destino3, ponto_espada)
 pygame.time.delay(500)
 
 desenha_terreno.desenha_terreno(final_convertido, LINHAS, COLUNAS, GRAMA,
-                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, True)
+                                AREIA, FLORESTA, MONTANHA, AGUA, PRETO, BRANCO, AMARELO, TAMANHO_TILE, screen, portaaberta, True)
 
 # Imprime o caminho até o ponto final
 caminho_str = ' -> '.join(str(i) for i in caminho)
