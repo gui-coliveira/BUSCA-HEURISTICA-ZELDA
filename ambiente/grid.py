@@ -114,11 +114,6 @@ def desenhar_caminho(caminho_recente, ponto_start, ponto_dest):
     # Desenhar o ponto de partida
     pygame.draw.rect(screen, (0, 255, 242), (ponto_start[1] *
                                              TAMANHO_TILE, ponto_start[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
-
-    # Desenhar o ponto de destino
-    pygame.draw.rect(screen, (0, 250, 229), (ponto_dest[1] *
-                                             TAMANHO_TILE, ponto_dest[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
-
     # Preencher o caminho com a cor vermelha
     clock = pygame.time.Clock()
     for celula in caminho_recente:
@@ -127,7 +122,7 @@ def desenhar_caminho(caminho_recente, ponto_start, ponto_dest):
                            TAMANHO_TILE-1, TAMANHO_TILE-1)
         screen.fill((255, 0, 0), rect=rect)
         pygame.display.update()
-        clock.tick(80)
+        clock.tick(7)
 
 
 def algoritmo_a_estrela(terreno_convertido, ponto_start, ponto_destino1):
@@ -219,9 +214,6 @@ desenha_terreno.desenha_terreno(terreno_convertido, LINHAS, COLUNAS, GRAMA,
 
 pygame.draw.rect(screen, (255, 0, 0), (ponto_partida[1] *
                                        TAMANHO_TILE, ponto_partida[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
-
-pygame.draw.rect(screen, (0, 250, 229), (ponto_destino1[1] *
-                                         TAMANHO_TILE, ponto_destino1[0]*TAMANHO_TILE, TAMANHO_TILE-1, TAMANHO_TILE-1))
 
 pygame.display.update()
 
